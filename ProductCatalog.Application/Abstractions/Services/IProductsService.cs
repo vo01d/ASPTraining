@@ -1,5 +1,4 @@
-﻿using ProductCatalog.Application.RequestsAndResponces.Products;
-using ProductCatalog.Application.RequestsAndResponses.Products;
+﻿using ProductCatalog.Application.RequestsAndResponses.Products;
 using ProductCatalog.Core.Entities;
 
 namespace ProductCatalog.Application.Abstractions.Services {

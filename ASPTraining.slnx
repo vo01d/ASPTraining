@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="ProductCatalog.Api/ProductCatalog.Api.csproj" DisplayName="ProductCatalog.API" />
+  <Project Path="ProductCatalog.Api/ProductCatalog.Api.csproj" DisplayName="ProductCatalog.Api" />
   <Project Path="ProductCatalog.Application/ProductCatalog.Application.csproj" Id="2b613018-3682-4d85-a6c6-7da636aa22bb" />
   <Project Path="ProductCatalog.Core/ProductCatalog.Core.csproj" Id="eb747340-67b6-43fb-aabf-0daa91ec4806" />
   <Project Path="ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj" Id="4075abb1-ed09-423b-8784-db95d9f36dd8" />

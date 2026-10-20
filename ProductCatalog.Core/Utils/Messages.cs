@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace ProductCatalog.Core.Utils {
+﻿namespace ProductCatalog.Core.Utils {
     public static class Messages {
         public static string UnexpectedErrorMessage => "An unexpected error occurred.";
         public static string StartedRetrievingAllLogMessage => "Started retrieving all {entityNamePluralLower}.";
@@ -19,6 +17,8 @@ namespace ProductCatalog.Core.Utils {
         public static string StartedDeletingEntityWithIdLogMessage => "Started deleting {entityNameSingularLower} with Id = {id}.";
         public static string SuccessfullyDeletedEntityWithIdLogMessage => "Successfully deleted {entityNameSingularLower} with Id = {id}.";
         public static string UnexpectedErrorOccurredDeletingEntityWithIdLogMessage => "Unexpected error occurred while deleting {entityNameSingularLower} with Id = {id}. Exception message: {message}.";
+        public static string EntityCreationRequestFailedValidationLogMessage => "{entityNameSingularUpper} creation request failed validation: {message}";
+        public static string EntityUpdatingRequestFailedValidationLogMessage => "{entityNameSingularUpper} updating request failed validation: {message}";
 
         public static string FormatEntityWithIdNotFoundErrorMessage(string entityNameSingularUpper, int id) {
             return $"{entityNameSingularUpper} with Id = {id} was not found.";

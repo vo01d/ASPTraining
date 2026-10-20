@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Api.Extensions;
-using ProductCatalog.Infrastructure.Context;
+using ProductCatalog.Api.Middleware;
 
 namespace ProductCatalog.API {
     internal class Program {
@@ -35,10 +34,9 @@ namespace ProductCatalog.API {
                 .AllowAnyOrigin()
                 );
 
-            app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseHttpsRedirection();
 
             app.UseAppDbContext();
 

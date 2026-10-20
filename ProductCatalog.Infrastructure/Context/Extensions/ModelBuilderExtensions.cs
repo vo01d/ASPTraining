@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductCatalog.Infrastructure.Context.EntityConfigurations;
 using System.Reflection;
 
 namespace ProductCatalog.Infrastructure.Context.Extensions {

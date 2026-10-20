@@ -15,7 +15,7 @@ namespace ProductCatalog.Application.RequestsAndResponses.Products {
                 errors.AppendLine("Name cannot be empty.");
             }
 
-            if (Price < 0) {
+            if (Price <= 0) {
                 errors.AppendLine("Price cannot be less than zero.");
             }
 
@@ -26,14 +26,6 @@ namespace ProductCatalog.Application.RequestsAndResponses.Products {
             if (errors.Length > 0) {
                 throw new RequestValidationException(errors.ToString().TrimEnd());
             }
-        }
-
-        public static Product ToDbModel(CreateProductRequest request) {
-            return new Product {
-                Name = request.Name,
-                Price = request.Price,
-                Quantity = request.Quantity
-            };
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using ProductCatalog.Application.Abstractions.Repositories;
 using ProductCatalog.Application.Abstractions.Services;
-using ProductCatalog.Application.RequestsAndResponces.Products;
+using ProductCatalog.Application.Mapping;
 using ProductCatalog.Application.RequestsAndResponses.Products;
 using ProductCatalog.Core.Entities;
+using ProductCatalog.Core.Exceptions;
 using ProductCatalog.Core.Utils;
 
 namespace ProductCatalog.Application.Implementations.Services {
@@ -20,7 +21,9 @@ namespace ProductCatalog.Application.Implementations.Services {
         }
 
         public async Task<Product> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken) {
-            var productToCreate = CreateProductRequest.ToDbModel(request);
+            request.Validate();
+            
+            var productToCreate = ProductMapper.ToEntity(request);
 
             var createdProduct = await productsRepository.AddAsync(productToCreate, cancellationToken);
             await productsRepository.SaveChangesAsync(cancellationToken);
@@ -29,14 +32,14 @@ namespace ProductCatalog.Application.Implementations.Services {
         }
 
         public async Task<Product> UpdateAsync(int id, UpdateProductRequest request, CancellationToken cancellationToken) {
+            request.Validate();
+
             var productToUpdate = await productsRepository.GetByIdAsync(id, cancellationToken)
-               ?? throw new InvalidOperationException(
+               ?? throw new EntityNotFoundException(
                     Messages.FormatEntityWithIdNotFoundErrorMessage(EntityNames.Product.SingularUpper, id)
                );
 
-            productToUpdate.Name = request.Name;
-            productToUpdate.Price = request.Price;
-            productToUpdate.Quantity = request.Quantity;
+            ProductMapper.Apply(productToUpdate, request);
 
             productsRepository.Update(productToUpdate);
             await productsRepository.SaveChangesAsync(cancellationToken);
@@ -46,7 +49,7 @@ namespace ProductCatalog.Application.Implementations.Services {
 
         public async Task DeleteAsync(int id, CancellationToken cancellationToken) {
             var productToDelete = await productsRepository.GetByIdAsync(id, cancellationToken)
-               ?? throw new InvalidOperationException(
+               ?? throw new EntityNotFoundException(
                     Messages.FormatEntityWithIdNotFoundErrorMessage(EntityNames.Product.SingularUpper, id)
                );
 

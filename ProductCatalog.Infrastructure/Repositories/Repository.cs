@@ -33,7 +33,7 @@ namespace ProductCatalog.Infrastructure.Repositories {
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken) {
-            await _context.SaveChangesAsync(cancellationToken); 
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

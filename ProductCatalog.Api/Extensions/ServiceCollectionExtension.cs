@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Application.Abstractions.Repositories;
 using ProductCatalog.Application.Abstractions.Services;
 using ProductCatalog.Application.Implementations.Services;
