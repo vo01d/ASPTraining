@@ -22,7 +22,7 @@ namespace ProductCatalog.Application.Implementations.Services {
 
         public async Task<Product> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken) {
             request.Validate();
-            
+
             var productToCreate = ProductMapper.ToEntity(request);
 
             var createdProduct = await productsRepository.AddAsync(productToCreate, cancellationToken);

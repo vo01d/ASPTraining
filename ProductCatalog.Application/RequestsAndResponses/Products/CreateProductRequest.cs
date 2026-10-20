@@ -1,5 +1,5 @@
-﻿using ProductCatalog.Core.Entities;
-using ProductCatalog.Core.Exceptions;
+﻿using ProductCatalog.Core.Exceptions;
+using ProductCatalog.Core.Utils;
 using System.Text;
 
 namespace ProductCatalog.Application.RequestsAndResponses.Products {
@@ -16,7 +16,7 @@ namespace ProductCatalog.Application.RequestsAndResponses.Products {
             }
 
             if (Price <= 0) {
-                errors.AppendLine("Price cannot be less than zero.");
+                errors.AppendLine("Price must be greater than zero.");
             }
 
             if (Quantity < 0) {
@@ -24,7 +24,13 @@ namespace ProductCatalog.Application.RequestsAndResponses.Products {
             }
 
             if (errors.Length > 0) {
-                throw new RequestValidationException(errors.ToString().TrimEnd());
+                throw new RequestValidationException(
+                    Messages.FormatEntityRequestFailedValidationErrorMessage(
+                        EntityNames.Product.SingularUpper,
+                        "creation",
+                        errors.ToString().TrimEnd()
+                    )
+                );
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductCatalog.Core.Exceptions;
+using ProductCatalog.Core.Utils;
 
 namespace ProductCatalog.Api.Middleware {
     public sealed class ExceptionHandlingMiddleware(
@@ -9,8 +11,32 @@ namespace ProductCatalog.Api.Middleware {
             try {
                 await next(context);
             }
+            catch (RequestValidationException ex) {
+                logger.LogWarning(ex, Messages.RequestValidationFailedMessage);
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                await context.Response.WriteAsJsonAsync(
+                    new ProblemDetails {
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = Messages.RequestValidationFailedMessage,
+                        Detail = ex.Message
+                    },
+                    cancellationToken: context.RequestAborted);
+            }
+            catch (EntityNotFoundException ex) {
+                logger.LogWarning(ex, Messages.EntityNotFoundMessage);
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+                await context.Response.WriteAsJsonAsync(
+                    new ProblemDetails {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = Messages.EntityNotFoundMessage,
+                        Detail = ex.Message
+                    },
+                    cancellationToken: context.RequestAborted);
+            }
             catch (Exception ex) {
-                logger.LogError(ex, "An unexpected error occurred while processing the request.");
+                logger.LogError(ex, Messages.UnexpectedErrorMessage);
 
                 if (context.Response.HasStarted) {
                     throw;
@@ -23,7 +49,7 @@ namespace ProductCatalog.Api.Middleware {
 
                 var problem = new ProblemDetails {
                     Status = StatusCodes.Status500InternalServerError,
-                    Title = "An unexpected error occurred.",
+                    Title = Messages.UnexpectedErrorMessage,
                     Detail = "The server could not complete the request."
                 };
 
