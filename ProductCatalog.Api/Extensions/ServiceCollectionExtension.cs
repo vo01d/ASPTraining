@@ -10,7 +10,7 @@ using ProductCatalog.Infrastructure.Repositories;
 namespace ProductCatalog.Api.Extensions {
     public static class ServiceCollectionExtension {
         public static void AddServices(this IServiceCollection services, IConfiguration configuration) {
-            services.AddTransient<IProductsService, ProductsService>();
+            services.AddScoped<IProductsService, ProductsService>();
         }
         public static void AddAppDbContext(this IServiceCollection services, IConfiguration configuration) {
             var connectionString = configuration.GetConnectionString("DbConnection");
@@ -20,7 +20,7 @@ namespace ProductCatalog.Api.Extensions {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration) {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            services.AddTransient<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
         }
     }
 }

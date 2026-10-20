@@ -1,7 +1,9 @@
 ﻿using ProductCatalog.Application.Abstractions.Repositories;
 using ProductCatalog.Application.Abstractions.Services;
 using ProductCatalog.Application.RequestsAndResponces.Products;
+using ProductCatalog.Application.RequestsAndResponses.Products;
 using ProductCatalog.Core.Entities;
+using ProductCatalog.Core.Utils;
 
 namespace ProductCatalog.Application.Implementations.Services {
     public class ProductsService(IProductsRepository productsRepository) : IProductsService {
@@ -17,8 +19,8 @@ namespace ProductCatalog.Application.Implementations.Services {
             return product;
         }
 
-        public async Task<Product> CreateAsync(CreateOrUpdateProductRequest request, CancellationToken cancellationToken) {
-            var productToCreate = CreateOrUpdateProductRequest.ToDbModel(request);
+        public async Task<Product> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken) {
+            var productToCreate = CreateProductRequest.ToDbModel(request);
 
             var createdProduct = await productsRepository.AddAsync(productToCreate, cancellationToken);
             await productsRepository.SaveChangesAsync(cancellationToken);
@@ -26,11 +28,11 @@ namespace ProductCatalog.Application.Implementations.Services {
             return createdProduct;
         }
 
-        public async Task<Product> UpdateAsync(int id, CreateOrUpdateProductRequest request, CancellationToken cancellationToken) {
-            var productToUpdate = await productsRepository.GetByIdAsync(id, cancellationToken) 
-                ?? throw new InvalidOperationException(
-                    $"Product with id = {id} was not found"
-                );
+        public async Task<Product> UpdateAsync(int id, UpdateProductRequest request, CancellationToken cancellationToken) {
+            var productToUpdate = await productsRepository.GetByIdAsync(id, cancellationToken)
+               ?? throw new InvalidOperationException(
+                    Messages.FormatEntityWithIdNotFoundErrorMessage(EntityNames.Product.SingularUpper, id)
+               );
 
             productToUpdate.Name = request.Name;
             productToUpdate.Price = request.Price;
@@ -44,9 +46,9 @@ namespace ProductCatalog.Application.Implementations.Services {
 
         public async Task DeleteAsync(int id, CancellationToken cancellationToken) {
             var productToDelete = await productsRepository.GetByIdAsync(id, cancellationToken)
-                ?? throw new InvalidOperationException(
-                    $"Product with id = {id} was not found"
-                );
+               ?? throw new InvalidOperationException(
+                    Messages.FormatEntityWithIdNotFoundErrorMessage(EntityNames.Product.SingularUpper, id)
+               );
 
             productsRepository.Delete(productToDelete);
             await productsRepository.SaveChangesAsync(cancellationToken);

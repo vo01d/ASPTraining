@@ -1,4 +1,5 @@
 ﻿using ProductCatalog.Application.RequestsAndResponces.Products;
+using ProductCatalog.Application.RequestsAndResponses.Products;
 using ProductCatalog.Core.Entities;
 
 namespace ProductCatalog.Application.Abstractions.Services {
@@ -7,9 +8,9 @@ namespace ProductCatalog.Application.Abstractions.Services {
 
         Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
-        Task<Product> CreateAsync(CreateOrUpdateProductRequest request, CancellationToken cancellationToken);
+        Task<Product> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken);
 
-        Task<Product> UpdateAsync(int id, CreateOrUpdateProductRequest request, CancellationToken cancellationToken);
+        Task<Product> UpdateAsync(int id, UpdateProductRequest request, CancellationToken cancellationToken);
 
         Task DeleteAsync(int id, CancellationToken cancellationToken);
     }
